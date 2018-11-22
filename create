@@ -1,0 +1,134 @@
+#!/bin/bash
+
+[[ $1 ]] || { echo "Usage: $0 <project_name>"; exit; }
+
+dir="$1";
+date=$(date -I);
+
+if [ ! -d $dir ];
+	then
+	mkdir -p $dir/{js,css};
+	cat > "$dir/sw.js" << EOF
+self.addEventListener('fetch', function(e) {
+  e.respondWith(
+    caches.match(e.request).then(function(response) {
+      return response || fetch(e.request);
+    })
+  );
+});
+EOF
+	cat > "$dir/js/main.js" << EOF
+window.addEventListener('load', function(e) {
+  window.applicationCache.addEventListener('updateready', function(e) {
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+		  window.applicationCache.swapCache();
+		  window.location.reload();
+    }
+  }, false);
+}, false);
+
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/$dir/sw.js')
+           .then(function() { });
+}
+
+let deferredPrompt;
+const addBtn = document.createElement('button');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  addBtn.style.display = 'block';
+  addBtn.addEventListener('click', (e) => {
+    addBtn.style.display = 'none';
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+        deferredPrompt = null;
+      });
+  });
+});
+EOF
+	cat > "$dir/css/main.css" << EOF
+html, body{
+  margin: 0;
+  padding: 0;
+}
+canvas{
+  display: block;
+}
+EOF
+	cat > "$dir/index.html" << EOF
+<!DOCTYPE html>
+<html language="en" manifest="manifest.appcache">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta property="og:url" content=" " />
+	<meta property="og:type" content=" " />
+	<meta property="og:title" content=" " />
+	<meta property="og:author" content=" " />
+	<meta property="og:description" content=" " />
+	<meta property="og:image" content=" " />
+	<title> $dir </title>
+	<link rel="manifest" href="manifest.json" />
+	<link rel="stylesheet" href="css/main.css" />
+	<link rel="icon" type="image/x-icon" href="favicon.png" />
+	<link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+	<script src="js/main.js"></script>
+</body>
+</html>
+EOF
+	cat > "$dir/fallback.html" << EOF
+<h1> OffLine :( </h1>
+EOF
+	cat > "$dir/manifest.appcache" << EOF
+CACHE MANIFEST
+# $date:v1.0
+
+CACHE:
+manifest.json
+favicon.png
+index.html
+css/main.css
+js/main.js
+sw.js
+
+NETWORK:
+*
+
+FALLBACK:
+/ fallback.html
+EOF
+	cat > "$dir/manifest.json" << EOF
+{
+  "name": " ",
+  "short_name": " ",
+  "description": " ",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "backgroun_color": "#FFF",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "density": 1
+    }
+  ]
+}
+EOF
+	echo "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAQAAAD2e2DtAAABu0lEQVR42u3SQREAAAzCsOHf9F6oIJXQS07Tx\
+QIABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACA\
+ABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAA\
+IAAEgAASAABAAAgAACwAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAA\
+BIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABI\
+AAEgAAQAAJAAAgAASAABIAAEAACQAAIAAAsAEAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAAB\
+AAAkAACAABIAAEgAAQAAJAAAgAASAABIAAEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAAgAASAABIA\
+AEAACQAAIAAEgAASAABAAAkAACAABIAAEgAAQAAJAAKg9kK0BATSHu+YAAAAASUVORK5CYII=" | base64 -d > "$dir/favicon.png";
+	echo "Created $dir";
+fi
