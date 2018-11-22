@@ -20,7 +20,7 @@ Run it with a project's name as argument
 create myAwesomeProject
 ```
 
-## Project tree
+## Files created
 
 [index.html](myAwesomeProject/index.html)  
 [css/main.css](myAwesomeProject/css/main.css)  
