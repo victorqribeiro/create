@@ -20,8 +20,6 @@ Run it with a project's name as argument
 create myAwesomeProject
 ```
 
-Done!
-
 ## Project tree
 
 [index.html](myAwesomeProject/index.html)  
