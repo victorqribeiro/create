@@ -60,9 +60,10 @@ canvas{
 EOF
 	cat > "$dir/index.html" << EOF
 <!DOCTYPE html>
-<html language="en" manifest="manifest.appcache">
+<html lang="en" manifest="manifest.appcache">
 <head>
 	<meta charset="utf-8">
+	<meta name="theme-color" content="#FFF"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta property="og:url" content=" " />
@@ -112,10 +113,17 @@ EOF
   "display": "standalone",
   "orientation": "portrait",
   "backgroun_color": "#FFF",
+  "theme_color": "#FFFF",
   "icons": [
     {
       "src": "favicon.png",
       "sizes": "256x256",
+      "type": "image/png",
+      "density": 1
+    },
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
       "type": "image/png",
       "density": 1
     }
