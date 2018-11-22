@@ -26,12 +26,12 @@ Done!
 ```
 myAwesomeProject
  |-- css
- |   '-- main.css
+ |   '-- [main.css](myAwesomeProject/css/main.css)
  |-- js
- |   '-- main.js
- |-- index.html
- |-- sw.js
- |-- favicon.png
- |-- manifest.appcache
- |-- manifest.json
+ |   '-- [main.js](myAwesomeProject/js/main.js)
+ |-- [index.html](myAwesomeProject/index.html)
+ |-- [sw.js](myAwesomeProject/sw.js)
+ |-- [favicon.png](myAwesomeProject/favicon.png)
+ |-- [manifest.appcache](myAwesomeProject/manifest.appcache)
+ |-- [manifest.json](myAwesomeProject/manifest.json)
 ```
