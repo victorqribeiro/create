@@ -1,6 +1,6 @@
 # Create
 
-A simple bash script to create web apps.
+A simple bash script to create web apps that can be installed on devices as native apps.
 
 ## About
 
