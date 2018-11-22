@@ -23,6 +23,7 @@ create myAwesomeProject
 Done!
 
 ## Project tree
+```
 myAwesomeProject
  |-- css
  |   '-- main.css
@@ -33,3 +34,4 @@ myAwesomeProject
  |-- favicon.png
  |-- manifest.appcache
  |-- manifest.json
+```
