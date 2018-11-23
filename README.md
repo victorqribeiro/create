@@ -29,3 +29,7 @@ create myAwesomeProject
 [favicon.png](myAwesomeProject/favicon.png)  
 [manifest.appcache](myAwesomeProject/manifest.appcache)  
 [manifest.json](myAwesomeProject/manifest.json)  
+
+## Bugs
+
+There's a discussion about who should be in charge of the cache (for offline disponibility). Some say the responsable should be the manifest.appcache (which works, but don't prompt the user to install the app) - others say the cache should be done on the service worker script (that is giving me a headache). Soon as possible I'll try to figure this out.
