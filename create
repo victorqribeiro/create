@@ -107,8 +107,8 @@ EOF
   "start_url": "index.html",
   "display": "standalone",
   "orientation": "portrait",
-  "backgroun_color": "#FFF",
-  "theme_color": "#FFFF",
+  "background_color": "#FFF",
+  "theme_color": "#FFF",
   "icons": [
     {
       "src": "favicon.png",

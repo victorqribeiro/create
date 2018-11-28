@@ -1,8 +1,16 @@
+window.addEventListener('load', function(e) {
+  window.applicationCache.addEventListener('updateready', function(e) {
+    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+		  window.applicationCache.swapCache();
+		  window.location.reload();
+    }
+  }, false);
+}, false);
+
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
            .register('/myAwesomeProject/sw.js')
-           .then(response => response)
-           .catch(reason => reason);
+           .then(function() { });
 }
 
 let deferredPrompt;
