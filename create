@@ -9,28 +9,44 @@ if [ ! -d $dir ];
 	then
 	mkdir -p $dir/{js,css};
 	cat > "$dir/sw.js" << EOF
-self.addEventListener('fetch', function(e) {
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request);
-    })
+var CACHE_NAME = '$dir';
+var urlsToCache = [
+  '/',
+  '/index.html',
+  '/favicon.png',
+  '/manifest.json',
+  '/css/main.css',
+  '/js/main.js'
+];
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        return cache.addAll(urlsToCache);
+      }).catch(reason => reason)
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      }
+    ).catch(reason => reason)
   );
 });
 EOF
 	cat > "$dir/js/main.js" << EOF
-window.addEventListener('load', function(e) {
-  window.applicationCache.addEventListener('updateready', function(e) {
-    if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-		  window.applicationCache.swapCache();
-		  window.location.reload();
-    }
-  }, false);
-}, false);
-
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
            .register('/$dir/sw.js')
-           .then(function() { });
+           .then(response => response)
+           .catch(reason => reason);
 }
 
 let deferredPrompt;
@@ -60,7 +76,7 @@ canvas{
 EOF
 	cat > "$dir/index.html" << EOF
 <!DOCTYPE html>
-<html lang="en" manifest="manifest.appcache">
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="theme-color" content="#FFF"/>
@@ -82,27 +98,6 @@ EOF
 	<script src="js/main.js"></script>
 </body>
 </html>
-EOF
-	cat > "$dir/fallback.html" << EOF
-<h1> OffLine :( </h1>
-EOF
-	cat > "$dir/manifest.appcache" << EOF
-CACHE MANIFEST
-# $date:v1.0
-
-CACHE:
-manifest.json
-favicon.png
-index.html
-css/main.css
-js/main.js
-sw.js
-
-NETWORK:
-*
-
-FALLBACK:
-/ fallback.html
 EOF
 	cat > "$dir/manifest.json" << EOF
 {
