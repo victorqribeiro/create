@@ -70,7 +70,7 @@ EOF
 	cat > "$dir/js/main.js" << EOF
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
-           .register('/$dir/sw.js')
+           .register('/$dir/sw.js', {scope: './'})
            .then(response => response)
            .catch(reason => reason);
 }
