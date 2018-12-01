@@ -24,6 +24,7 @@ create myAwesomeProject
 
 [index.html](myAwesomeProject/index.html)  
 [css/main.css](myAwesomeProject/css/main.css)  
+[js/aux.js](myAwesomeProject/js/aux.js)  
 [js/main.js](myAwesomeProject/js/main.js)  
 [sw.js](myAwesomeProject/sw.js)  
 [favicon.png](myAwesomeProject/favicon.png)  
