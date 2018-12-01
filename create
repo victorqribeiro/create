@@ -8,6 +8,7 @@ date=$(date -I);
 if [ ! -d $dir ];
 	then
 	mkdir -p $dir/{js,css};
+	touch $dir/js/main.js;
 	cat > "$dir/sw.js" << EOF
 const filesToCache = [
     	'./',
@@ -67,7 +68,7 @@ self.addEventListener('activate', event => {
   );
 });
 EOF
-	cat > "$dir/js/main.js" << EOF
+	cat > "$dir/js/aux.js" << EOF
 if('serviceWorker' in navigator) {
   navigator.serviceWorker
            .register('/$dir/sw.js', {scope: './'})
@@ -121,6 +122,7 @@ EOF
 	<link rel="apple-touch-icon" href="favicon.png" />
 </head>
 <body>
+	<script src="js/aux.js"></script>
 	<script src="js/main.js"></script>
 </body>
 </html>
